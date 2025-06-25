@@ -5,16 +5,10 @@
 
 struct sInfos
 {
-	bool	verbose;
-	bool	quiet;
-	bool	numeric;
+	bool		verbose;
+	bool		help;
 
-	int		timeout;
-	int		size;
-	int		interval;
-	int		number;
-
-	bool	help;
+	const char*	ip;
 };
 
 typedef struct sInfos tInfos;

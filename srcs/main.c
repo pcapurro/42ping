@@ -2,17 +2,17 @@
 
 int	main(const int argc, const char** argv)
 {
-	if (argc == 1)
-		error(0);
-
 	tInfos	infos;
 
-	setToDefault(&infos);
-
-	getOptions(&infos, argv + 1);
+	if (registerArguments(&infos, argv + 1) == NULL)
+		return (64);
 
 	if (infos.help == true)
 		help();
+	else
+		ping(&infos);
+
+	(void) argc;
 
 	return (0);
 }

@@ -10,10 +10,15 @@
 
 void	writeStr(const char* str, const int value);
 
-void	setToDefault(tInfos* infos);
-void	getOptions(tInfos* infos, const char** argv);
+void	error(const int value, const char* str, const char c);
 
-void	error(const int value);
+void	*registerHost(tInfos* infos, const char** argv);
+void	*registerOptionsPOSIX(tInfos* infos, const char** argv);
+void	*registerOptionsGNU(tInfos* infos, const char** argv);
+
+void	*registerArguments(tInfos* infos, const char** argv);
+
+void	ping(tInfos* infos);
 
 void	help(void);
 int		main(const int argc, const char** argv);
