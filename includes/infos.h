@@ -13,6 +13,8 @@ struct sInfos
 	int		size;
 	int		interval;
 	int		number;
+
+	bool	help;
 };
 
 typedef struct sInfos tInfos;
