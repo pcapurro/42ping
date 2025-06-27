@@ -59,13 +59,13 @@ void	*registerHost(tInfos* infos, const char** argv)
 	if (infos->help == true)
 		return (infos);
 
-	for (int i = 0; argv[i] != NULL && infos->ip == NULL; i++)
+	for (int i = 0; argv[i] != NULL && infos->host == NULL; i++)
 	{
 		if (argv[i][0] != '\0' && argv[i][0] != '-')
-			infos->ip = argv[i];
+			infos->host = argv[i];
 	}
 
-	if (infos->ip == NULL)
+	if (infos->host == NULL)
 	{
 		error(1, NULL, '\0');
 		return (NULL);
@@ -76,6 +76,7 @@ void	*registerHost(tInfos* infos, const char** argv)
 
 void	*registerArguments(tInfos* infos, const char** argv)
 {
+	infos->host = NULL;
 	infos->ip = NULL;
 
 	infos->verbose = false;

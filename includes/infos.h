@@ -8,6 +8,7 @@ struct sInfos
 	bool		verbose;
 	bool		help;
 
+	const char*	host;
 	const char*	ip;
 };
 

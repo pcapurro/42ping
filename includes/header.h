@@ -6,6 +6,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <netdb.h>
+
 # include "infos.h"
 
 void	writeStr(const char* str, const int value);
