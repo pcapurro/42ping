@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <signal.h>
 
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -24,6 +25,9 @@ void	*registerOptionsGNU(tInfos* infos, const char** argv);
 
 void	*registerArguments(tInfos* infos, const char** argv);
 
+void	setToDefault(tInfos* infos);
+
+void	end(const int signal);
 void	ping(tInfos* infos);
 
 void	help(void);

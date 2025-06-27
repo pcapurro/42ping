@@ -8,6 +8,17 @@ struct sInfos
 	bool		verbose;
 	bool		help;
 
+	int			received;
+	int			sent;
+	int			loss;
+
+	float		min;
+	float		avg;
+	float		max;
+	float		stddev;
+
+	int			socket;
+
 	const char*	host;
 	const char*	ip;
 };
