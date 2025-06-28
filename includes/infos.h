@@ -6,6 +6,11 @@
 struct sInfos
 {
 	bool		verbose;
+	bool		numeric;
+
+	bool		routing;
+	bool		flood;
+
 	bool		help;
 
 	int			received;
