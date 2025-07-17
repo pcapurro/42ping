@@ -28,7 +28,10 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(CFLAGS) $(OBJS)
 
-re: fclean all
+right:
+	@sudo setcap cap_net_raw+ep $(NAME)
+
+re: fclean all right
 
 clean:
 	@rm -rf $(OBJS)

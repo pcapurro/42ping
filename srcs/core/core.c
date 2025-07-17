@@ -57,6 +57,10 @@ void	ping(tInfos* infos)
 	else
 		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
 
+	infos->socket = socket(AF_INET, SOCK_RAW, IPPROTO_COMP);
+	if (infos->socket == -1)
+		error(5, NULL, '\0');
+
 	signal(SIGINT, end);
 	while (42)
 		;
