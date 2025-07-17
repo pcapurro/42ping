@@ -25,7 +25,6 @@ void	error(const int value, const char* str, const char c)
 
 	if (value == 5)
 	{
-		perror("");
 		writeStr("ping: fatal network error\n", 2);
 		exit(1);
 	}

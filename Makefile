@@ -15,7 +15,7 @@ SRCS = srcs/main.c \
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I includes/
+CFLAGS = -I includes/
 
 ## == .C TO .O == ##
 

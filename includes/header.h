@@ -14,6 +14,7 @@
 # include <netdb.h>
 
 # include "infos.h"
+# include "icmp.h"
 
 void	writeStr(const char* str, const int value);
 

@@ -36,8 +36,8 @@ void	setToDefault(tInfos* infos)
 
 void	ping(tInfos* infos)
 {
-	struct hostent	*hostInfos = NULL;
-	struct in_addr	addr;
+	struct hostent		*hostInfos = NULL;
+	struct in_addr		addr;
 
 	hostInfos = gethostbyname(infos->host);
 	if (hostInfos == NULL)
@@ -61,7 +61,7 @@ void	ping(tInfos* infos)
 	if (infos->socket == -1)
 		error(5, NULL, '\0');
 
-	signal(SIGINT, end);
-	while (42)
-		;
+	// signal(SIGINT, end);
+	// while (42)
+	// 	;
 }
