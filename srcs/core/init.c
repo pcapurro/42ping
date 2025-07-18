@@ -41,9 +41,13 @@ void	initialize(tInfos* infos)
 	infos->package.type = ECHO_REQUEST;
 	infos->package.code = 0;
 
-	infos->package.checksum = 0;
-	infos->package.checksum = calculateChecksum(&infos->package);
-
 	infos->package.id = getpid();
 	infos->package.sequence = 1;
+
+	for (int i = 0; i != 56; i++)
+		infos->package.data[i] = '\0';
+
+	infos->package.checksum = calculateChecksum(&infos->package);
+
+	// printf("%d\n", infos->package.checksum);
 }
