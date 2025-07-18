@@ -34,14 +34,14 @@ void	initialize(tInfos* infos)
 	setToDefault(infos);
 	infosPtr = infos;
 
-	infos->socket = socket(AF_INET, SOCK_RAW, IPPROTO_COMP);
+	infos->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (infos->socket == -1)
 		error(5, NULL, '\0');
 
 	infos->ping.header.type = ECHO_REQUEST;
-	infos->ping.header.type = 0;
+	infos->ping.header.code = 0;
 
-	infos->ping.header.un.echo.id = getpid();
+	infos->ping.header.un.echo.id = htons(getpid());
 	infos->ping.header.un.echo.sequence = 0;
 
 	for (int i = 0; i != 56; i++)
