@@ -38,18 +38,16 @@ void	initialize(tInfos* infos)
 	if (infos->socket == -1)
 		error(5, NULL, '\0');
 
-	infos->ping.type = ECHO_REQUEST;
-	infos->ping.code = 0;
+	infos->ping.header.type = ECHO_REQUEST;
+	infos->ping.header.type = 0;
 
-	infos->ping.id = getpid();
-	infos->ping.sequence = 0;
+	infos->ping.header.un.echo.id = getpid();
+	infos->ping.header.un.echo.sequence = 0;
 
 	for (int i = 0; i != 56; i++)
 		infos->ping.data[i] = '\0';
 
-	infos->ping.checksum = 0;
-
-	// printf("%d\n", infos->ping.checksum);
+	infos->ping.header.checksum = 0;
 
 	infos->dest.sin_family = AF_INET;
 	if (inet_pton(AF_INET, infos->ip, &infos->dest.sin_addr) != 1)

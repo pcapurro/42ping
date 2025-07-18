@@ -11,13 +11,14 @@ uint16_t	calculateChecksum(tIcmp* ping)
 	uint32_t	sum = 0;
 	uint16_t	checksum = 0;
 	uint16_t	value = 0;
+	int			len = sizeof(tIcmp);
 
-	ping->checksum = 0;
+	ping->header.checksum = 0;
 
-	for (int i = 0; i != 64; i += 2)
+	for (int i = 0; i != len; i += 2)
 	{
 		value = ((uint8_t *)ping)[i] * 256;
-		if (i + 1 < 64)
+		if (i + 1 < len)
 			value += ((uint8_t *)ping)[i + 1];
 
 		sum += value;

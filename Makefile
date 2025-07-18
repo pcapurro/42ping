@@ -32,7 +32,7 @@ $(NAME): $(OBJS)
 right:
 	@sudo setcap cap_net_raw+ep $(NAME)
 
-re: fclean all right
+re: fclean all
 
 clean:
 	@rm -rf $(OBJS)

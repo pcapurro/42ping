@@ -1,12 +1,8 @@
 #ifndef INFOS_H
 # define INFOS_H
 
-# include <stdbool.h>
-
+# include "header.h"
 # include "icmp.h"
-
-typedef struct sockaddr_in	tAddr;
-typedef struct iphdr		ipHeader;
 
 struct sInfos
 {

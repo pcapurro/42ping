@@ -8,7 +8,10 @@ void	end(const int signal)
 
 	if (infosPtr->socket != -1)
 		close(infosPtr->socket);
-	
+
+	if (infosPtr->sent != 0)
+		infosPtr->loss = 100.0 - (100.0 * ((float)infosPtr->received / (float)infosPtr->sent));
+
 	printf("\n");
 
 	printf("--- %s ping statistics ---\n", infosPtr->host);
@@ -34,8 +37,10 @@ void	ping(tInfos* infos)
 	signal(SIGINT, end);
 	while (42)
 	{
-		infos->ping.sequence++;
-		infos->ping.checksum = calculateChecksum(&infos->ping);
+		infos->ping.header.un.echo.sequence++;
+		infos->ping.header.checksum = calculateChecksum(&infos->ping);
+
+		// printf("%d\n", infos->ping.header.checksum);
 
 		value = sendto(infos->socket, &infos->ping, 64, 0, \
 			(struct sockaddr*)&infos->dest, infos->destLen);
@@ -54,10 +59,7 @@ void	ping(tInfos* infos)
 		infos->received++;
 
 		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%f ms\n", \
-			value, infos->ip, infos->ping.sequence, 0, 0.0);
-
-		if (infos->sent != 0)
-			infos->loss = 100.0 - (100.0 * ((float)infos->received / (float)infos->sent));
+			value, infos->ip, infos->ping.header.un.echo.sequence, 0, 0.0);
 
 		if (infos->flood == false)
 			sleep(1);

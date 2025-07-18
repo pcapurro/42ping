@@ -1,24 +1,18 @@
 #ifndef ICMP_H
 # define ICMP_H
 
-# include <stdint.h>
+# include "header.h"
 
-# define ECHO_REQUEST 8
-# define ECHO_REPLY 0
+typedef struct icmphdr		tIcmpHdr;
+typedef struct sockaddr_in	tAddr;
+
+typedef struct sIcmp 		tIcmp;
 
 struct sIcmp
 {
-	uint8_t		type;
-	uint8_t		code;
-
-	uint16_t	checksum;
-	uint16_t	id;
-	uint16_t	sequence;
-
-	uint8_t		data[56];
+	tIcmpHdr	header;
+	char		data[56];
 
 };
-
-typedef struct sIcmp tIcmp;
 
 #endif
