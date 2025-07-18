@@ -5,6 +5,9 @@
 
 # include "icmp.h"
 
+typedef struct sockaddr_in	tAddr;
+typedef struct iphdr		ipHeader;
+
 struct sInfos
 {
 	bool		verbose;
@@ -25,7 +28,11 @@ struct sInfos
 	float		stddev;
 
 	int			socket;
-	tIcmp		package;
+	socklen_t	destLen;
+	tAddr		dest;
+
+	tIcmp		ping;
+	tIcmp		answer;
 
 	const char*	host;
 	const char*	ip;

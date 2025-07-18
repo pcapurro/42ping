@@ -6,19 +6,19 @@ void	writeStr(const char* str, const int value)
 		write(value, &str[i], 1);
 }
 
-uint16_t	calculateChecksum(tIcmp* package)
+uint16_t	calculateChecksum(tIcmp* ping)
 {
 	uint32_t	sum = 0;
 	uint16_t	checksum = 0;
 	uint16_t	value = 0;
 
-	package->checksum = 0;
+	ping->checksum = 0;
 
 	for (int i = 0; i != 64; i += 2)
 	{
-		value = ((uint8_t *)package)[i] * 256;
+		value = ((uint8_t *)ping)[i] * 256;
 		if (i + 1 < 64)
-			value += ((uint8_t *)package)[i + 1];
+			value += ((uint8_t *)ping)[i + 1];
 
 		sum += value;
 

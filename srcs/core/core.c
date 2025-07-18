@@ -29,7 +29,37 @@ void	ping(tInfos* infos)
 	else
 		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
 
+	int value = 0;
+
 	signal(SIGINT, end);
 	while (42)
-		;
+	{
+		infos->ping.sequence++;
+		infos->ping.checksum = calculateChecksum(&infos->ping);
+
+		value = sendto(infos->socket, &infos->ping, 64, 0, \
+			(struct sockaddr*)&infos->dest, infos->destLen);
+
+		if (value == -1)
+			error(5, NULL, '\0');
+
+		infos->sent++;
+
+		value = recvfrom(infos->socket, &infos->answer, sizeof(infos->answer), 0, \
+			(struct sockaddr*)&infos->dest, &infos->destLen);
+
+		if (value == -1)
+			error(5, NULL, '\0');
+
+		infos->received++;
+
+		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%f ms\n", \
+			value, infos->ip, infos->ping.sequence, 0, 0.0);
+
+		if (infos->sent != 0)
+			infos->loss = 100.0 - (100.0 * ((float)infos->received / (float)infos->sent));
+
+		if (infos->flood == false)
+			sleep(1);
+	}
 }
