@@ -9,6 +9,7 @@ NAME = 42ping
 SRCS = srcs/main.c \
 	srcs/help.c \
 	srcs/core/core.c \
+	srcs/core/init.c \
 	srcs/core/args.c \
 	srcs/core/tools.c \
 	srcs/core/error.c \

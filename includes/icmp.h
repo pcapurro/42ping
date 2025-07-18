@@ -15,6 +15,8 @@ struct sIcmp
 	uint16_t	id;
 	uint16_t	sequence;
 
+	uint8_t		data[56];
+
 };
 
 typedef struct sIcmp tIcmp;

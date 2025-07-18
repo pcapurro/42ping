@@ -3,6 +3,8 @@
 
 # include <stdbool.h>
 
+# include "icmp.h"
+
 struct sInfos
 {
 	bool		verbose;
@@ -23,6 +25,7 @@ struct sInfos
 	float		stddev;
 
 	int			socket;
+	tIcmp		package;
 
 	const char*	host;
 	const char*	ip;

@@ -16,22 +16,24 @@
 # include "infos.h"
 # include "icmp.h"
 
-void	writeStr(const char* str, const int value);
+void		writeStr(const char* str, const int value);
+uint16_t	calculateChecksum(tIcmp* package);
 
-void	error(const int value, const char* str, const char c);
+void		error(const int value, const char* str, const char c);
 
-void	*registerHost(tInfos* infos, const char** argv);
-void	*registerOptionsPOSIX(tInfos* infos, const char** argv);
-void	*registerOptionsGNU(tInfos* infos, const char** argv);
+void		*registerHost(tInfos* infos, const char** argv);
+void		*registerOptionsPOSIX(tInfos* infos, const char** argv);
+void		*registerOptionsGNU(tInfos* infos, const char** argv);
 
-void	*registerArguments(tInfos* infos, const char** argv);
+void		*registerArguments(tInfos* infos, const char** argv);
 
-void	setToDefault(tInfos* infos);
+void		setToDefault(tInfos* infos);
 
-void	end(const int signal);
-void	ping(tInfos* infos);
+void		end(const int signal);
+void		initialize(tInfos* infos);
+void		ping(tInfos* infos);
 
-void	help(void);
-int		main(const int argc, const char** argv);
+void		help(void);
+int			main(const int argc, const char** argv);
 
 #endif

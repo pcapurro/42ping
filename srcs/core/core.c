@@ -20,48 +20,16 @@ void	end(const int signal)
 	exit(0);
 }
 
-void	setToDefault(tInfos* infos)
-{
-	infos->sent = 0;
-	infos->received = 0;
-	infos->loss = 0;
-
-	infos->min = 0;
-	infos->max = 0;
-	infos->avg = 0;
-	infos->stddev = 0;
-
-	infos->socket = -1;
-}
-
 void	ping(tInfos* infos)
 {
-	struct hostent		*hostInfos = NULL;
-	struct in_addr		addr;
-
-	hostInfos = gethostbyname(infos->host);
-	if (hostInfos == NULL)
-		error(4, NULL, '\0');
-	
-	memset(&addr, 0, sizeof(addr));
-	addr.s_addr = *(uint32_t *) hostInfos->h_addr_list[0];
-
-	infos->ip = inet_ntoa(addr);
-	// printf("%s\n", infos->ip);
-
-	setToDefault(infos);
-	infosPtr = infos;
+	initialize(infos);
 
 	if (infos->verbose == false)
 		printf("PING %s (%s) : 56 data bytes\n", infos->host, infos->ip);
 	else
 		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
 
-	infos->socket = socket(AF_INET, SOCK_RAW, IPPROTO_COMP);
-	if (infos->socket == -1)
-		error(5, NULL, '\0');
-
-	// signal(SIGINT, end);
-	// while (42)
-	// 	;
+	signal(SIGINT, end);
+	while (42)
+		;
 }
