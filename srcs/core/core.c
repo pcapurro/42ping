@@ -47,7 +47,7 @@ void	ping(tInfos* infos)
 	if (infos->verbose == false)
 		printf("PING %s (%s) : 56 data bytes\n", infos->host, infos->ip);
 	else
-		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
+		printf("PING %s (%s) : 56 data bytes, id 0x%04x = %d\n", infos->host, infos->ip, infos->ping.header.un.echo.id, infos->ping.header.un.echo.id);
 
 	if (infos->flood == true)
 		printf("."), fflush(stdout);
