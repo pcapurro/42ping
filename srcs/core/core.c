@@ -17,7 +17,7 @@ void	end(const int signal)
 	printf("--- %s ping statistics ---\n", infosPtr->host);
 	printf("%d packets transmitted, %d packets received, %d%% packet loss\n", \
 			infosPtr->sent, infosPtr->received, infosPtr->loss);
-	printf("round-trip min/avg/max/stddev = %.2f/%.2f/%.2f/%.2f ms\n", \
+	printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", \
 			infosPtr->min, infosPtr->avg, infosPtr->max, infosPtr->stddev);
 
 	exit(0);
@@ -68,7 +68,7 @@ void	ping(tInfos* infos)
 		infos->end = getTime();
 		infos->received++;
 
-		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.2f ms\n", value - \
+		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", value - \
 			(((struct iphdr*)answer)->ihl * 4), infos->ip, infos->ping.header.un.echo.sequence / 256, \
 			((struct iphdr*)answer)->ttl, infos->end - infos->start);
 
