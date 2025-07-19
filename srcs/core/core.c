@@ -16,8 +16,15 @@ void	end(const int signal)
 	for (int i = 0; infosPtr->times[i] != 0; i++)
 		infosPtr->avg += infosPtr->times[i], len++;
 
-	if (len > 0)
+	if (len != 0)
+	{
 		infosPtr->avg = infosPtr->avg / len;
+
+		for (int i = 0; infosPtr->times[i] != 0; i++)
+			infosPtr->stddev += (pow(infosPtr->times[i] - infosPtr->avg, 2));
+
+		infosPtr->stddev = sqrt(infosPtr->stddev / len);
+	}
 
 	if (infosPtr->times != NULL)
 		free(infosPtr->times), infosPtr->times = NULL;

@@ -8,6 +8,8 @@
 # include <unistd.h>
 # include <signal.h>
 
+# include <math.h>
+
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <time.h>

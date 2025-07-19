@@ -16,7 +16,9 @@ SRCS = srcs/main.c \
 
 CC = gcc
 
-CFLAGS = -I includes/
+CFLAGS = -Wall -Wextra -Werror -I includes/
+
+LDFLAGS = -lm
 
 ## == .C TO .O == ##
 
@@ -27,12 +29,12 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(CFLAGS) $(OBJS)
+	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(LDFLAGS)
 
 right:
 	@sudo setcap cap_net_raw+ep $(NAME)
 
-re: fclean all
+re: fclean all right
 
 clean:
 	@rm -rf $(OBJS)
