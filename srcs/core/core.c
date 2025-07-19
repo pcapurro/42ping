@@ -42,6 +42,9 @@ void	ping(tInfos* infos)
 	else
 		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
 
+	if (infos->flood == true)
+		printf("."), fflush(stdout);
+
 	unsigned char	answer[1024] = {0};
 	socklen_t		destLen = sizeof(infos->dest);
 	int				value = 0;
@@ -79,10 +82,6 @@ void	ping(tInfos* infos)
 		infos->end = getTime();
 		infos->received++;
 
-		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", value - \
-			(((struct iphdr*)answer)->ihl * 4), infos->ip, infos->ping.header.un.echo.sequence / 256, \
-			((struct iphdr*)answer)->ttl, infos->end - infos->start);
-
 		if ((infos->end - infos->start) < infos->min)
 			infos->min = infos->end - infos->start;
 
@@ -92,6 +91,11 @@ void	ping(tInfos* infos)
 		addTime(&(infos->times), &(infos->timesLen), (infos->end - infos->start));
 
 		if (infos->flood == false)
+		{
+			printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", value - \
+			(((struct iphdr*)answer)->ihl * 4), infos->ip, ntohs(infos->ping.header.un.echo.sequence), \
+			((struct iphdr*)answer)->ttl, infos->end - infos->start);
 			sleep(1);
+		}
 	}
 }
