@@ -10,7 +10,7 @@ void	end(const int signal)
 		close(infosPtr->socket);
 
 	if (infosPtr->sent != 0)
-		infosPtr->loss = 100.0 - (100.0 * ((float)infosPtr->received / (float)infosPtr->sent));
+		infosPtr->loss = 100.0 - (100.0 * ((double)infosPtr->received / (double)infosPtr->sent));
 
 	printf("\n");
 
@@ -47,6 +47,7 @@ void	ping(tInfos* infos)
 		if (value == -1)
 			error(5, NULL, '\0');
 
+		infos->start = getTime();
 		infos->sent++;
 
 		value = recvfrom(infos->socket, answer, 4096, 0, \
@@ -55,11 +56,12 @@ void	ping(tInfos* infos)
 		if (value == -1)
 			error(5, NULL, '\0');
 
+		infos->end = getTime();
 		infos->received++;
 
 		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%f ms\n", value - \
 			(((struct iphdr*)answer)->ihl * 4), infos->ip, infos->ping.header.un.echo.sequence / 256, \
-			((struct iphdr*)answer)->ttl, 0.0);
+			((struct iphdr*)answer)->ttl, infos->end - infos->start);
 
 		if (infos->flood == false)
 			sleep(1);

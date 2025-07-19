@@ -18,10 +18,13 @@ struct sInfos
 	int			sent;
 	int			loss;
 
-	float		min;
-	float		avg;
-	float		max;
-	float		stddev;
+	double		min;
+	double		avg;
+	double		max;
+	double		stddev;
+
+	double		start;
+	double		end;
 
 	int			socket;
 	socklen_t	destLen;

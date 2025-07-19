@@ -31,3 +31,15 @@ uint16_t	calculateChecksum(tIcmp* ping)
 
 	return (~checksum);
 }
+
+double	getTime(void)
+{
+	struct timespec	time = {0};
+	double			value = 0;
+
+	clock_gettime(CLOCK_MONOTONIC, &time);
+
+	value = time.tv_sec + (time.tv_nsec / 1e9);
+
+	return (value);
+}

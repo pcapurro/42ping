@@ -19,7 +19,7 @@ void	setToDefault(tInfos* infos)
 void	initialize(tInfos* infos)
 {
 	struct hostent		*hostInfos = NULL;
-	struct in_addr		addr;
+	struct in_addr		addr = {0};
 
 	hostInfos = gethostbyname(infos->host);
 	if (hostInfos == NULL)

@@ -10,6 +10,8 @@
 
 # include <sys/types.h>
 # include <sys/socket.h>
+# include <time.h>
+
 # include <netinet/in.h>
 # include <netinet/ip_icmp.h>
 # include <arpa/inet.h>
@@ -21,6 +23,7 @@
 # define ECHO_REPLY 0
 
 void		writeStr(const char* str, const int value);
+double		getTime(void);
 uint16_t	calculateChecksum(tIcmp* ping);
 
 void		error(const int value, const char* str, const char c);
