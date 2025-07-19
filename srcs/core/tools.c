@@ -6,30 +6,19 @@ void	writeStr(const char* str, const int value)
 		write(value, &str[i], 1);
 }
 
-uint16_t	calculateChecksum(tIcmp* ping)
+uint16_t	calculateChecksum(tIcmp* ping, const int len)
 {
-	uint32_t	sum = 0;
-	uint16_t	checksum = 0;
-	uint16_t	value = 0;
-	int			len = sizeof(tIcmp);
+	uint32_t	value = 0;
 
 	ping->header.checksum = 0;
 
-	for (int i = 0; i != len; i += 2)
-	{
-		value = ((uint8_t *)ping)[i] * 256;
-		if (i + 1 < len)
-			value += ((uint8_t *)ping)[i + 1];
+	for (int i = 0; i < (len / 2); i++)
+		value += ((uint16_t *) ping)[i];
 
-		sum += value;
+	while (value >> 16)
+		value = (value & 0xFFFF) + (value >> 16);
 
-		if (sum > 0xFFFF)
-			sum = (sum & 0xFFFF) + 1;
-	}
-
-	checksum = (uint16_t)sum;
-
-	return (~checksum);
+	return ((uint16_t)(~value));
 }
 
 double	getTime(void)
@@ -39,7 +28,7 @@ double	getTime(void)
 
 	clock_gettime(CLOCK_MONOTONIC, &time);
 
-	value = time.tv_sec + (time.tv_nsec / 1e9);
+	value = time.tv_sec * 1000.0 + (time.tv_nsec / 1e6);
 
 	return (value);
 }

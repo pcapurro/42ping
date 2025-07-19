@@ -17,7 +17,7 @@ void	end(const int signal)
 	printf("--- %s ping statistics ---\n", infosPtr->host);
 	printf("%d packets transmitted, %d packets received, %d%% packet loss\n", \
 			infosPtr->sent, infosPtr->received, infosPtr->loss);
-	printf("round-trip min/avg/max/stddev = %f/%f/%f/%f ms\n", \
+	printf("round-trip min/avg/max/stddev = %.2f/%.2f/%.2f/%.2f ms\n", \
 			infosPtr->min, infosPtr->avg, infosPtr->max, infosPtr->stddev);
 
 	exit(0);
@@ -32,14 +32,14 @@ void	ping(tInfos* infos)
 	else
 		printf("PING %s (%s) : 56 data bytes, id %p = %d\n", infos->host, infos->ip, NULL, 0);
 
-	char	answer[1024] = {0};
-	int		value = 0;
+	unsigned char	answer[1024] = {0};
+	int				value = 0;
 
 	signal(SIGINT, end);
 	while (42)
 	{
 		infos->ping.header.un.echo.sequence = htons(infos->sent);
-		infos->ping.header.checksum = calculateChecksum(&infos->ping);
+		infos->ping.header.checksum = calculateChecksum(&infos->ping, sizeof(infos->ping));
 
 		value = sendto(infos->socket, &infos->ping, 64, 0, \
 			(struct sockaddr*)&infos->dest, infos->destLen);
@@ -50,16 +50,25 @@ void	ping(tInfos* infos)
 		infos->start = getTime();
 		infos->sent++;
 
-		value = recvfrom(infos->socket, answer, 4096, 0, \
-			(struct sockaddr*)&infos->dest, &infos->destLen);
+		while (21)
+		{
+			value = recvfrom(infos->socket, answer, 4096, 0, \
+				(struct sockaddr*)&infos->dest, &infos->destLen);
 
-		if (value == -1)
-			error(5, NULL, '\0');
+			if (value == -1)
+				error(5, NULL, '\0');
+
+			infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);
+			if (infos->answer->header.type == ECHO_REPLY \
+				&& infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
+				&& infos->answer->header.un.echo.sequence == infos->ping.header.un.echo.sequence)
+				break ;
+		}
 
 		infos->end = getTime();
 		infos->received++;
 
-		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%f ms\n", value - \
+		printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.2f ms\n", value - \
 			(((struct iphdr*)answer)->ihl * 4), infos->ip, infos->ping.header.un.echo.sequence / 256, \
 			((struct iphdr*)answer)->ttl, infos->end - infos->start);
 

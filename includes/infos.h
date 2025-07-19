@@ -31,7 +31,7 @@ struct sInfos
 	tAddr		dest;
 
 	tIcmp		ping;
-	tIcmp		answer;
+	tIcmp*		answer;
 
 	const char*	host;
 	const char*	ip;
