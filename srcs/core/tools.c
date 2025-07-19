@@ -32,3 +32,34 @@ double	getTime(void)
 
 	return (value);
 }
+
+void	*addTime(double** times, int* timesLen, const double newNumber)
+{
+	int	len = 0;
+
+	for (int i = 0; i != *timesLen && (*times)[i] != 0.0; i++)
+		len++;
+
+	if (len == *timesLen)
+	{
+		double*	newTimes = NULL;
+
+		newTimes = malloc(sizeof(double) * (*timesLen + 42));
+		if (!newTimes)
+			return (NULL);
+
+		int i = 0;
+		while (i != *timesLen)
+			newTimes[i] = (*times)[i], i++;
+		newTimes[i] = newNumber;
+
+		free(*times);
+		*times = newTimes;
+
+		*timesLen += 42;
+	}
+	else
+		(*times)[len] = newNumber;
+
+	return (times);
+}

@@ -25,6 +25,7 @@
 void		writeStr(const char* str, const int value);
 double		getTime(void);
 uint16_t	calculateChecksum(tIcmp* ping, const int len);
+void		*addTime(double** times, int* timesLen, const double newNumber);
 
 void		error(const int value, const char* str, const char c);
 

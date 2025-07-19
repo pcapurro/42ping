@@ -8,12 +8,20 @@ void	setToDefault(tInfos* infos)
 	infos->received = 0;
 	infos->loss = 0;
 
-	infos->min = 0;
+	infos->min = __DBL_MAX__;
 	infos->max = 0;
 	infos->avg = 0;
 	infos->stddev = 0;
 
+	infos->start = 0;
+	infos->end = 0;
+
+	infos->timesLen = 42;
+	infos->times = NULL;
+
 	infos->socket = -1;
+
+	infos->answer = NULL;
 }
 
 void	initialize(tInfos* infos)
@@ -53,5 +61,11 @@ void	initialize(tInfos* infos)
 	if (inet_pton(AF_INET, infos->ip, &infos->dest.sin_addr) != 1)
 		error(5, NULL, '\0');
 
-	infos->destLen = sizeof(infos->dest);
+	infos->times = malloc(sizeof(double) * 42);
+	if (!infos->times)
+		close(infos->socket), error(6, NULL, '\0');
+
+	infos->timesLen = 42;
+	for (int i = 0; i != infos->timesLen; i++)
+		infos->times[i] = 0;
 }

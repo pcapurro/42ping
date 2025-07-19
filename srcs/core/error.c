@@ -29,5 +29,11 @@ void	error(const int value, const char* str, const char c)
 		exit(1);
 	}
 
+	if (value == 6)
+	{
+		writeStr("ping: fatal system error\n", 2);
+		exit(1);
+	}
+
 	writeStr("Try 'ping --help' for more information.\n", 2);
 }

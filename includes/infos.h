@@ -26,10 +26,12 @@ struct sInfos
 	double		start;
 	double		end;
 
-	int			socket;
-	socklen_t	destLen;
-	tAddr		dest;
+	int			timesLen;
+	double		*times;
 
+	int			socket;
+
+	tAddr		dest;
 	tIcmp		ping;
 	tIcmp*		answer;
 
