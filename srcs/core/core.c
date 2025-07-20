@@ -80,7 +80,7 @@ void	ping(tInfos* infos)
 				error(5, NULL, '\0');
 
 			infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);
-			if (infos->answer->header.type == ECHO_REPLY \
+			if (infos->answer->header.type == ICMP_ECHO \
 				&& infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
 				&& infos->answer->header.un.echo.sequence == infos->ping.header.un.echo.sequence)
 				break ;

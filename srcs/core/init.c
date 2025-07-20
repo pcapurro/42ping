@@ -46,7 +46,10 @@ void	initialize(tInfos* infos)
 	if (infos->socket == -1)
 		error(5, NULL, '\0');
 
-	infos->ping.header.type = ECHO_REQUEST;
+	// int ttl = 1;
+	// setsockopt(infos->socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+
+	infos->ping.header.type = ICMP_ECHO;
 	infos->ping.header.code = 0;
 
 	infos->ping.header.un.echo.id = htons(getpid());

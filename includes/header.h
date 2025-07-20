@@ -21,9 +21,6 @@
 
 # include "infos.h"
 
-# define ECHO_REQUEST 8
-# define ECHO_REPLY 0
-
 void		writeStr(const char* str, const int value);
 double		getTime(void);
 uint16_t	calculateChecksum(tIcmp* ping, const int len);
