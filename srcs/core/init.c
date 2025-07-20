@@ -20,7 +20,11 @@ void	setToDefault(tInfos* infos)
 	infos->times = NULL;
 
 	infos->socket = -1;
+	
+	infos->error = false;
+	infos->errorType = 0;
 
+	infos->answerHdr = NULL;
 	infos->answer = NULL;
 }
 

@@ -105,6 +105,8 @@ bool	isValidAnswer(tInfos* infos)
 {
 	if (infos->answer->header.type == ICMP_ECHOREPLY)
 	{
+		infos->error = false;
+
 		if (infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
 			&& infos->answer->header.un.echo.sequence == infos->ping.header.un.echo.sequence)
 			return (true);
@@ -112,6 +114,9 @@ bool	isValidAnswer(tInfos* infos)
 	
 	if (isErrorCode(infos->answer->header.type) == true)
 	{
+		infos->error = true;
+		infos->errorType = infos->answer->header.type;
+
 		infos->answer = (tIcmp*)((char*)infos->answer + sizeof(struct icmphdr));
 		infos->answer = (tIcmp*)((char*)infos->answer + ((struct iphdr *)infos->answer)->ihl * 4);
 
@@ -123,16 +128,16 @@ bool	isValidAnswer(tInfos* infos)
 	return (false);
 }
 
-bool	isErrorCode(const uint8_t value)
+bool	isErrorCode(const uint8_t type)
 {
-	if (value == ICMP_DEST_UNREACH)
-		return (true);
+	if (type == ICMP_DEST_UNREACH)
+		{ printf("error ICMP_DEST_UNREACH\n"); return (true); }
 
-	if (value == ICMP_TIME_EXCEEDED)
-		return (true);
+	if (type == ICMP_TIME_EXCEEDED)
+		{ printf("error ICMP_TIME_EXCEEDED\n"); return (true); }
 
-	if (value == ICMP_PARAMETERPROB)
-		return (true);
+	if (type == ICMP_PARAMETERPROB)
+		{ printf("error ICMP_PARAMETERPROB\n"); return (true); }
 
 	return (false);
 }

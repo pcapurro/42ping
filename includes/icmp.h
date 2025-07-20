@@ -3,6 +3,7 @@
 
 # include "header.h"
 
+typedef struct iphdr		ipHdr;
 typedef struct icmphdr		tIcmpHdr;
 typedef struct sockaddr_in	tAddr;
 

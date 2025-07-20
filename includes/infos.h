@@ -28,8 +28,13 @@ struct sInfos
 
 	int			socket;
 
+	bool		error;
+	int			errorType;
+
 	tAddr		dest;
 	tIcmp		ping;
+
+	ipHdr*		answerHdr;
 	tIcmp*		answer;
 
 	const char*	host;

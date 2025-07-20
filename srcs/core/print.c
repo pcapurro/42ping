@@ -1,8 +1,38 @@
 #include "header.h"
 
-void	printError(tInfos* infos)
+void	printError(tInfos* infos, const unsigned char* answer, const int value)
 {
-	(void) infos;
+	struct in_addr	source = {0};
+	struct hostent*	host = NULL;
+
+	char*			srcIp = NULL;
+	char*			src = NULL;
+
+	source.s_addr = infos->answerHdr->saddr;
+	srcIp = inet_ntoa(source);
+
+	host = gethostbyaddr(&source, sizeof(source), AF_INET);
+	if (host == NULL || host->h_name == NULL)
+		src = srcIp;
+	else
+		src = host->h_name;
+
+	if (src == NULL || srcIp == NULL)
+		src = "none", srcIp = NULL;
+
+	if (infos->errorType == ICMP_DEST_UNREACH)
+		printf("%d bytes from %s (%s): Destination not reachable\n", \
+			value - (((struct iphdr*)answer)->ihl * 4), src, srcIp);
+
+	if (infos->errorType == ICMP_TIME_EXCEEDED)
+	{
+		printf("%d bytes from %s (%s): Time to live exceeded\n", \
+			value - (((struct iphdr*)answer)->ihl * 4), src, srcIp);
+	}
+
+	if (infos->errorType == ICMP_PARAMETERPROB)
+		printf("%d bytes from %s (%s): Paramaters problem(s)\n", \
+			value - (((struct iphdr*)answer)->ihl * 4), src, srcIp);
 }
 
 void	printTitle(tInfos* infos)

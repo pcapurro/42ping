@@ -50,7 +50,9 @@ int	receivePong(tInfos* infos, unsigned char* answer)
 		if (value == -1)
 			error(5, NULL, '\0');
 
+		infos->answerHdr = (ipHdr*) answer;
 		infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);
+
 		if (isValidAnswer(infos) == true)
 			break ;
 	}
@@ -74,8 +76,8 @@ void	ping(tInfos* infos)
 
 		value = receivePong(infos, answer);
 
-		if (isErrorCode(infos->answer->header.type) == true)
-			printError(infos);
+		if (infos->error == true)
+			printError(infos, answer, value);
 		else
 		{
 			registerTime(infos);
