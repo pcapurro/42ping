@@ -26,6 +26,9 @@ void	end(const int signal)
 		infosPtr->stddev = sqrt(infosPtr->stddev / len);
 	}
 
+	if (infosPtr->min == __DBL_MAX__)
+		infosPtr->min = 0;
+
 	if (infosPtr->times != NULL)
 		free(infosPtr->times), infosPtr->times = NULL;
 
