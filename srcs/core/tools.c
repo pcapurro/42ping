@@ -26,7 +26,8 @@ double	getTime(void)
 	struct timespec	time = {0};
 	double			value = 0;
 
-	clock_gettime(CLOCK_MONOTONIC, &time);
+	if (clock_gettime(CLOCK_MONOTONIC, &time) != 0)
+		return (0);
 
 	value = time.tv_sec * 1000.0 + (time.tv_nsec / 1e6);
 
@@ -131,13 +132,13 @@ bool	isValidAnswer(tInfos* infos)
 bool	isErrorCode(const uint8_t type)
 {
 	if (type == ICMP_DEST_UNREACH)
-		{ printf("error ICMP_DEST_UNREACH\n"); return (true); }
+		return (true);
 
 	if (type == ICMP_TIME_EXCEEDED)
-		{ printf("error ICMP_TIME_EXCEEDED\n"); return (true); }
+		return (true);
 
 	if (type == ICMP_PARAMETERPROB)
-		{ printf("error ICMP_PARAMETERPROB\n"); return (true); }
+		return (true);
 
 	return (false);
 }
