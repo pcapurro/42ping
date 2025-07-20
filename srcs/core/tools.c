@@ -33,6 +33,29 @@ double	getTime(void)
 	return (value);
 }
 
+void	calculate(tInfos* infos)
+{
+	if (infos->sent != 0)
+		infos->loss = 100.0 - (100.0 * ((double)infos->received / (double)infos->sent));
+
+	int len = 0;
+	for (int i = 0; infos->times[i] != 0; i++)
+		infos->avg += infos->times[i], len++;
+
+	if (len != 0)
+	{
+		infos->avg = infos->avg / len;
+
+		for (int i = 0; infos->times[i] != 0; i++)
+			infos->stddev += (pow(infos->times[i] - infos->avg, 2));
+
+		infos->stddev = sqrt(infos->stddev / len);
+	}
+
+	if (infos->min == __DBL_MAX__)
+		infos->min = 0;
+}
+
 void	*addTime(double** times, int* timesLen, const double newNumber)
 {
 	int	len = 0;
@@ -62,4 +85,54 @@ void	*addTime(double** times, int* timesLen, const double newNumber)
 		(*times)[len] = newNumber;
 
 	return (times);
+}
+
+void	registerTime(tInfos* infos)
+{
+	infos->end = getTime();
+	infos->received++;
+
+	if ((infos->end - infos->start) < infos->min)
+		infos->min = infos->end - infos->start;
+
+	if ((infos->end - infos->start) > infos->max)
+		infos->max = infos->end - infos->start;
+
+	addTime(&(infos->times), &(infos->timesLen), (infos->end - infos->start));
+}
+
+bool	isValidAnswer(tInfos* infos)
+{
+	if (infos->answer->header.type == ICMP_ECHOREPLY)
+	{
+		if (infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
+			&& infos->answer->header.un.echo.sequence == infos->ping.header.un.echo.sequence)
+			return (true);
+	}
+	
+	if (isErrorCode(infos->answer->header.type) == true)
+	{
+		infos->answer = (tIcmp*)((char*)infos->answer + sizeof(struct icmphdr));
+		infos->answer = (tIcmp*)((char*)infos->answer + ((struct iphdr *)infos->answer)->ihl * 4);
+
+		if (infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
+			&& infos->answer->header.un.echo.sequence == infos->ping.header.un.echo.sequence)
+			return (true);
+	}
+
+	return (false);
+}
+
+bool	isErrorCode(const uint8_t value)
+{
+	if (value == ICMP_DEST_UNREACH)
+		return (true);
+
+	if (value == ICMP_TIME_EXCEEDED)
+		return (true);
+
+	if (value == ICMP_PARAMETERPROB)
+		return (true);
+
+	return (false);
 }

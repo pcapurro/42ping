@@ -34,7 +34,21 @@ void		*registerOptionsGNU(tInfos* infos, const char** argv);
 
 void		*registerArguments(tInfos* infos, const char** argv);
 
+void		registerTime(tInfos* infos);
+
+bool		isErrorCode(const uint8_t value);
+bool		isValidAnswer(tInfos* infos);
+void		calculate(tInfos* infos);
+
+void		printError(tInfos* infos);
+void		printTitle(tInfos* infos);
+void		printLog(tInfos* infos, const unsigned char* answer, const int value);
+void		printFinal(tInfos* infos);
+
 void		setToDefault(tInfos* infos);
+
+void		sendPing(tInfos* infos);
+int			receivePong(tInfos* infos, unsigned char* answer);
 
 void		end(const int signal);
 void		initialize(tInfos* infos);
