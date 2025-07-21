@@ -2,7 +2,7 @@
 
 void	printVerboseError(tInfos* infos, const unsigned char* answer, const int value)
 {
-	ipHdr*			header = (ipHdr*) infos->answerHdr;
+	const ipHdr*	header = (ipHdr*) infos->answerHdr;
 	struct in_addr	ipSrc = {0};
 	struct in_addr	ipDst = {0};
 
@@ -10,8 +10,8 @@ void	printVerboseError(tInfos* infos, const unsigned char* answer, const int val
 	uint16_t		len, id, off, cks;
 	uint8_t			tos;
 
-	const char*		src = NULL;
-	const char*		dst = NULL;
+	char*		src = NULL;
+	char*		dst = NULL;
 
 	vr = header->version;
 	hl = header->ihl;
