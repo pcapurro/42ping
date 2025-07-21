@@ -119,6 +119,7 @@ bool	isValidAnswer(tInfos* infos)
 		infos->errorType = infos->answer->header.type;
 
 		infos->answer = (tIcmp*)((char*)infos->answer + sizeof(struct icmphdr));
+		infos->answerHdr = (ipHdr*) infos->answer;
 		infos->answer = (tIcmp*)((char*)infos->answer + ((struct iphdr *)infos->answer)->ihl * 4);
 
 		if (infos->answer->header.un.echo.id == infos->ping.header.un.echo.id \
