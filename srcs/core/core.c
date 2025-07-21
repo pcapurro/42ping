@@ -6,13 +6,9 @@ void	end(const int signal)
 {
 	(void) signal;
 
-	if (infosPtr->socket != -1)
-		close(infosPtr->socket);
-
 	calculate(infosPtr);
 
-	if (infosPtr->times != NULL)
-		free(infosPtr->times), infosPtr->times = NULL;
+	freeData(infosPtr);
 
 	printFinal(infosPtr);
 
@@ -31,7 +27,7 @@ void	sendPing(tInfos* infos)
 		(struct sockaddr*)&infos->dest, destLen);
 
 	if (value == -1)
-		error(5, NULL, '\0');
+		freeData(infos), error(5, NULL, '\0');
 
 	infos->start = getTime();
 	infos->sent++;
@@ -48,7 +44,7 @@ int	receivePong(tInfos* infos, unsigned char* answer)
 			(struct sockaddr*)&infos->dest, &destLen);
 
 		if (value == -1)
-			error(5, NULL, '\0');
+			freeData(infos), error(5, NULL, '\0');
 
 		infos->answerHdr = (ipHdr*) answer;
 		infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);

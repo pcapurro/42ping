@@ -99,7 +99,8 @@ void	registerTime(tInfos* infos)
 	if ((infos->end - infos->start) > infos->max)
 		infos->max = infos->end - infos->start;
 
-	addTime(&(infos->times), &(infos->timesLen), (infos->end - infos->start));
+	if (addTime(&(infos->times), &(infos->timesLen), (infos->end - infos->start)) == NULL)
+		freeData(infos), error(6, NULL, '\0');
 }
 
 bool	isValidAnswer(tInfos* infos)

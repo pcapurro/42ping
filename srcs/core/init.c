@@ -28,6 +28,14 @@ void	setToDefault(tInfos* infos)
 	infos->answer = NULL;
 }
 
+void	freeData(tInfos* infos)
+{
+	if (infos->times != NULL)
+		free(infos->times), infos->times = NULL;
+	if (infos->socket != -1)
+		close(infos->socket), infos->socket = -1;
+}
+
 void	initialize(tInfos* infos)
 {
 	struct hostent		*hostInfos = NULL;
@@ -66,11 +74,11 @@ void	initialize(tInfos* infos)
 
 	infos->dest.sin_family = AF_INET;
 	if (inet_pton(AF_INET, infos->ip, &infos->dest.sin_addr) != 1)
-		error(5, NULL, '\0');
+		freeData(infos), error(5, NULL, '\0');
 
 	infos->times = malloc(sizeof(double) * 42);
 	if (!infos->times)
-		close(infos->socket), error(6, NULL, '\0');
+		freeData(infos), error(6, NULL, '\0');
 
 	infos->timesLen = 42;
 	for (int i = 0; i != infos->timesLen; i++)

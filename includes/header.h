@@ -46,6 +46,7 @@ void		printLog(tInfos* infos, const unsigned char* answer, const int value);
 void		printFinal(tInfos* infos);
 
 void		setToDefault(tInfos* infos);
+void		freeData(tInfos* infos);
 
 void		sendPing(tInfos* infos);
 int			receivePong(tInfos* infos, unsigned char* answer);
