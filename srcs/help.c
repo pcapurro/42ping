@@ -9,8 +9,6 @@ void	help(void)
 	printf("Options valid for all request types:\n");
 	printf("\n");
 
-	printf("-n, --numeric		do not resolve host addresses\n");
-	printf("-r, --ignore-routing	send directly to a host on an attached network\n");
 	printf("-v, --verbose		verbose output\n");
 
 	printf("\n");
