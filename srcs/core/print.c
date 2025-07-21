@@ -3,6 +3,8 @@
 void	printVerboseError(tInfos* infos, const unsigned char* answer, const int value)
 {
 	ipHdr*			header = (ipHdr*) infos->answerHdr;
+	struct in_addr	ipSrc = {0};
+	struct in_addr	ipDst = {0};
 
 	uint32_t		vr, hl, flg, ttl, pro;
 	uint16_t		len, id, off, cks;
@@ -25,8 +27,15 @@ void	printVerboseError(tInfos* infos, const unsigned char* answer, const int val
 	pro = header->protocol;
 	cks = header->check;
 
-	src = inet_ntoa(*((struct in_addr *)&header->saddr));
-	dst = inet_ntoa(*((struct in_addr *)&header->daddr));
+	ipSrc.s_addr = header->saddr;
+	src = strdup(inet_ntoa(ipSrc));
+	ipDst.s_addr = header->daddr;
+	dst = strdup(inet_ntoa(ipDst));
+
+	if (!src)
+		src = "none";
+	if (!dst)
+		dst = "none";
 
 	printf("IP Hdr Dump:\n");
 	for (int i = 0; i != (((struct iphdr*)answer)->ihl * 4); i += 2)
@@ -34,7 +43,7 @@ void	printVerboseError(tInfos* infos, const unsigned char* answer, const int val
 	printf("\n");
 
 	printf("Vr\tHL\tTOS\tLen\tID\tFlg\toff\tTTL\tPro\tcks\tSrc\t\tDst\t\tData\n");
-	printf("%2u\t%2u\t%02x\t%04x\t%04x\t%3u\t%04x\t%3u\t%3u\t%04x\t%s\t%s	\n", \
+	printf("%2u\t%2u\t%02x\t%04x\t%04x\t%2u\t%04x\t%02u\t%02u\t%02x\t%s\t%s	\n", \
 		vr, hl, tos, len, id, flg, off, ttl, pro, cks, src, dst);
 
 	printf("ICMP: type %d, code %d, size %d, id 0x%04x, seq 0x%04x\n", \
