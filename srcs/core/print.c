@@ -14,18 +14,27 @@ void	printVerboseError(tInfos* infos, const unsigned char* answer, const int val
 	char*		dst = NULL;
 
 	vr = header->version;
+	// = version (= IPv4 ou IPv6)
 	hl = header->ihl;
+	// = longueur de l'en-tête
 
 	tos = header->tos;
+	// = priorité/latence/débit
 	len = value - header->ihl * 4;
-	id = header->id;
+	// = taille du paquet
+	id = ntohs(header->id);
 
-	flg = header->frag_off >> 13;
-	off = header->frag_off & 0x1FFF;
+	flg = ntohs(header->frag_off) >> 13;
+	// = flags (= indiquent le type de fragmentation)
+	// > fragmentation si le paquet est trop gros
+	off = ntohs(header->frag_off) & 0x1FFF;
+	// = offset (= indique à quel endroit le fragment devra être placé)
 
 	ttl = header->ttl;
 	pro = header->protocol;
-	cks = header->check;
+	// = protocole (= ICMP/TCP/UDP)
+	cks = ntohs(header->check);
+	// = checksum
 
 	ipSrc.s_addr = header->saddr;
 	src = strdup(inet_ntoa(ipSrc));
@@ -39,11 +48,11 @@ void	printVerboseError(tInfos* infos, const unsigned char* answer, const int val
 
 	printf("IP Hdr Dump:\n");
 	for (int i = 0; i != (((struct iphdr*)answer)->ihl * 4); i += 2)
-		printf("%04x ", answer[i] << 8 | answer[i + 1]);
+		printf("%04x ", (answer[i] * 256) + answer[i + 1]);
 	printf("\n");
 
 	printf("Vr\tHL\tTOS\tLen\tID\tFlg\toff\tTTL\tPro\tcks\tSrc\t\tDst\t\tData\n");
-	printf("%2u\t%2u\t%02x\t%04x\t%04x\t%2u\t%04x\t%02u\t%02u\t%02x\t%s\t%s	\n", \
+	printf("%2u\t%2u\t%02x\t%02x\t%04x\t%2u\t%04x\t%02u\t%02u\t%02x\t%s\t%s	\n", \
 		vr, hl, tos, len, id, flg, off, ttl, pro, cks, src, dst);
 
 	printf("ICMP: type %d, code %d, size %d, id 0x%04x, seq 0x%04x\n", \
