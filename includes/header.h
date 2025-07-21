@@ -39,6 +39,7 @@ bool		isErrorCode(const uint8_t type);
 bool		isValidAnswer(tInfos* infos);
 void		calculate(tInfos* infos);
 
+void		printVerboseError(tInfos* infos, const unsigned char* answer, const int value);
 void		printError(tInfos* infos, const unsigned char* answer, const int value);
 void		printTitle(tInfos* infos);
 void		printLog(tInfos* infos, const unsigned char* answer, const int value);

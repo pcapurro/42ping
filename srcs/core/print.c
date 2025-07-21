@@ -1,5 +1,45 @@
 #include "header.h"
 
+void	printVerboseError(tInfos* infos, const unsigned char* answer, const int value)
+{
+	uint32_t		vr, hl, flg, ttl, pro;
+	uint16_t		len, id, off, cks;
+	uint8_t			tos;
+
+	const char*		src = NULL;
+	const char*		dst = NULL;
+
+	vr = infos->answerHdr->version;
+	hl = infos->answerHdr->ihl;
+
+	tos = infos->answerHdr->tos;
+	len = value - (((struct iphdr*)answer)->ihl * 4);
+	id = infos->answerHdr->id;
+
+	flg = infos->answerHdr->frag_off >> 13;
+	off = infos->answerHdr->frag_off & 0x1FFF;
+
+	ttl = infos->answerHdr->ttl;
+	pro = infos->answerHdr->protocol;
+	cks = infos->answerHdr->check;
+
+	src = inet_ntoa(*((struct in_addr *)&infos->answerHdr->saddr));
+	dst = inet_ntoa(*((struct in_addr *)&infos->answerHdr->daddr));
+
+	printf("IP Hdr Dump:\n");
+	for (int i = 0; i != (((struct iphdr*)answer)->ihl * 4); i += 2)
+		printf("%04x ", answer[i] << 8 | answer[i + 1]);
+	printf("\n");
+
+	printf("Vr\tHL\tTOS\tLen\tID\tFlg\toff\tTTL\tPro\tcks\tSrc\tDst\tData\n");
+	printf("%2u\t%2u\t%02x\t%04x\t%04x\t%3u\t%04x\t%3u\t%3u\t%04x\t%s\t%s	\n", \
+		vr, hl, tos, len, id, flg, off, ttl, pro, cks, src, dst);
+
+	printf("ICMP: type %d, code %d, size %d, id 0x%04x, seq 0x%04x\n", \
+		infos->ping.header.type, infos->ping.header.code, 64, \
+		infos->ping.header.un.echo.id, infos->ping.header.un.echo.sequence);
+}
+
 void	printError(tInfos* infos, const unsigned char* answer, const int value)
 {
 	struct in_addr	source = {0};
@@ -39,17 +79,7 @@ void	printError(tInfos* infos, const unsigned char* answer, const int value)
 	}
 
 	if (infos->verbose == true)
-	{
-		printf("IP Hdr Dump:\n");
-		// printf("\0");
-
-		printf("Vr	HL	TOS	Len	ID	Flg	off	TTL	Pro	cks	Src	Dst	Data\n");
-		// printf("%d	%d	%x	%d	%d	%x	%x	%x	%x	%d	%d	%d	%d\n", 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42);
-
-		printf("ICMP: type %d, code %d, size %d, id 0x%04x, seq 0x%04x\n", \
-			infos->ping.header.type, infos->ping.header.code, 0, \
-			infos->ping.header.un.echo.id, infos->ping.header.un.echo.sequence);
-	}
+		printVerboseError(infos, answer, value);
 }
 
 void	printTitle(tInfos* infos)
