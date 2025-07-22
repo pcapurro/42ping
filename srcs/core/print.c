@@ -132,6 +132,8 @@ void	printFinal(tInfos* infos)
 	printf("--- %s ping statistics ---\n", infos->host);
 	printf("%d packet(s) transmitted, %d packet(s) received, %d%% packet loss\n", \
 			infos->sent, infos->received, infos->loss);
-	printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", \
+
+	if (infos->avg != 0)
+		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", \
 			infos->min, infos->avg, infos->max, infos->stddev);
 }

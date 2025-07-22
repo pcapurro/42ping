@@ -58,8 +58,14 @@ void	initialize(tInfos* infos)
 	if (infos->socket == -1)
 		error(5, NULL, '\0');
 
-	// int ttl = 1;
-	// setsockopt(infos->socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+	int ttl = 255;
+	if (setsockopt(infos->socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) != 0)
+		freeData(infos), error(5, NULL, '\0');
+
+	struct timeval	time;
+	time.tv_sec = 1, time.tv_usec = 0;
+	if (setsockopt(infos->socket, SOL_SOCKET, SO_RCVTIMEO, &time, sizeof(time)) != 0)
+		freeData(infos), error(5, NULL, '\0');
 
 	infos->ping.header.type = ICMP_ECHO;
 	infos->ping.header.code = 0;

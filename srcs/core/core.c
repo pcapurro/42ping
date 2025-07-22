@@ -43,13 +43,13 @@ int	receivePong(tInfos* infos, unsigned char* answer)
 		value = recvfrom(infos->socket, answer, 4096, 0, \
 			(struct sockaddr*)&infos->dest, &destLen);
 
-		if (value == -1)
+		if (value == -1 && errno != EAGAIN && errno != EWOULDBLOCK)
 			freeData(infos), error(5, NULL, '\0');
 
 		infos->answerHdr = (ipHdr*) answer;
 		infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);
 
-		if (isValidAnswer(infos) == true)
+		if (isValidAnswer(infos) == true || value == -1)
 			break ;
 	}
 
@@ -71,6 +71,8 @@ void	ping(tInfos* infos)
 		sendPing(infos);
 
 		value = receivePong(infos, answer);
+		if (value == -1)
+			continue ;
 
 		if (infos->error == true)
 			printError(infos, answer, value);
