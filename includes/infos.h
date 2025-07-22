@@ -7,8 +7,6 @@
 struct sInfos
 {
 	bool		verbose;
-	bool		flood;
-
 	bool		help;
 
 	int			received;

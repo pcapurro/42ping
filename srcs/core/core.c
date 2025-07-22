@@ -80,6 +80,7 @@ void	ping(tInfos* infos)
 		{
 			registerTime(infos);
 			printLog(infos, answer, value);
+			sleep(1);
 		}
 	}
 }

@@ -9,8 +9,6 @@ void	*registerOptionsPOSIX(tInfos* infos, const char** argv)
 
 		if (strcmp("--verbose", argv[i]) == 0)
 			infos->verbose = true;
-		else if (strcmp("--flood", argv[i]) == 0)
-			infos->flood = true;
 		else if (strcmp("--help", argv[i]) == 0)
 		{
 			infos->help = true;
@@ -40,8 +38,6 @@ void	*registerOptionsGNU(tInfos* infos, const char** argv)
 		{
 			if (argv[i][k] == 'v')
 				infos->verbose = true;
-			else if (argv[i][k] == 'f')
-				infos->flood = true;
 			else if (argv[i][k] == '?')
 			{
 				infos->help = true;
@@ -81,8 +77,6 @@ void	*registerHost(tInfos* infos, const char** argv)
 void	*registerArguments(tInfos* infos, const char** argv)
 {
 	infos->verbose = false;
-	infos->flood = false;
-
 	infos->help = false;
 
 	infos->host = NULL;

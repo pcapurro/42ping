@@ -16,6 +16,5 @@ void	help(void)
 	printf("Options valid for --echo requests:\n");
 	printf("\n");
 
-	printf("-f, --flood		flood ping (root only)\n");
 	printf("-?, --help		give this help list\n");
 }
