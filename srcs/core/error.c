@@ -21,7 +21,14 @@ void	error(const int value, const char* str, const char c)
 		writeStr("ping: unknown host\n", 2);
 
 	if (value == 5)
-		writeStr("ping: fatal network error\n", 2);
+	{
+		if (str == NULL)
+			str = "fatal error";
+
+		writeStr("ping: ", 2);
+		writeStr(str, 2);
+		writeStr("\n", 2);
+	}
 
 	if (value == 6)
 		writeStr("ping: fatal system error\n", 2);

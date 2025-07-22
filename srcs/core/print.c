@@ -125,7 +125,7 @@ void	printFinal(tInfos* infos)
 	printf("%d packet(s) transmitted, %d packet(s) received, %d%% packet loss\n", \
 			infos->sent, infos->received, infos->loss);
 
-	if (infos->avg != 0)
+	if (infos->received != 0)
 		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", \
 			infos->min, infos->avg, infos->max, infos->stddev);
 }

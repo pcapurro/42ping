@@ -27,7 +27,7 @@ void	sendPing(tInfos* infos)
 		(struct sockaddr*)&infos->dest, destLen);
 
 	if (value == -1)
-		freeData(infos), error(5, NULL, '\0');
+		freeData(infos), error(5, strerror(errno), '\0');
 
 	infos->start = getTime();
 	infos->sent++;
@@ -44,7 +44,7 @@ int	receivePong(tInfos* infos, unsigned char* answer)
 			(struct sockaddr*)&infos->dest, &destLen);
 
 		if (value == -1 && errno != EAGAIN && errno != EWOULDBLOCK)
-			freeData(infos), error(5, NULL, '\0');
+			freeData(infos), error(5, strerror(errno), '\0');
 
 		infos->answerHdr = (ipHdr*) answer;
 		infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);
