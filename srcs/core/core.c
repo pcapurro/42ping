@@ -36,12 +36,12 @@ void	sendPing(tInfos* infos)
 int	receivePong(tInfos* infos, unsigned char* answer)
 {
 	int			value = 0;
-	socklen_t	destLen = sizeof(infos->dest);
+	socklen_t	destLen = sizeof(infos->src);
 
 	while (21)
 	{
 		value = recvfrom(infos->socket, answer, 4096, 0, \
-			(struct sockaddr*)&infos->dest, &destLen);
+			(struct sockaddr*)&infos->src, &destLen);
 
 		if (value == -1 && errno != EAGAIN && errno != EWOULDBLOCK)
 			freeData(infos), error(5, strerror(errno), '\0');
@@ -80,7 +80,8 @@ void	ping(tInfos* infos)
 		{
 			registerTime(infos);
 			printLog(infos, answer, value);
-			sleep(1);
 		}
+
+		sleep(1);
 	}
 }

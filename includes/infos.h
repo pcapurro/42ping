@@ -29,7 +29,9 @@ struct sInfos
 	bool		error;
 	int			errorType;
 
+	tAddr		src;
 	tAddr		dest;
+
 	tIcmp		ping;
 
 	ipHdr*		answerHdr;

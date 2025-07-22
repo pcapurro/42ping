@@ -62,7 +62,7 @@ void	initialize(tInfos* infos)
 	if (setsockopt(infos->socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) != 0)
 		freeData(infos), error(5, strerror(errno), '\0');
 
-	struct timeval	time;
+	struct timeval	time = {0};
 	time.tv_sec = 1, time.tv_usec = 0;
 	if (setsockopt(infos->socket, SOL_SOCKET, SO_RCVTIMEO, &time, sizeof(time)) != 0)
 		freeData(infos), error(5, strerror(errno), '\0');
@@ -70,6 +70,8 @@ void	initialize(tInfos* infos)
 	int value = 1;
 	if (setsockopt(infos->socket, SOL_SOCKET, SO_BROADCAST, &value, sizeof(value)) != 0)
 		freeData(infos), error(5, strerror(errno), '\0');
+
+	memset(&infos->ping, 0, sizeof(infos->ping));
 
 	infos->ping.header.type = ICMP_ECHO;
 	infos->ping.header.code = 0;
@@ -81,6 +83,9 @@ void	initialize(tInfos* infos)
 		infos->ping.data[i] = '\0';
 
 	infos->ping.header.checksum = 0;
+
+	memset(&infos->src, 0, sizeof(infos->src));
+	memset(&infos->dest, 0, sizeof(infos->src));
 
 	infos->dest.sin_family = AF_INET;
 	if (inet_pton(AF_INET, infos->ip, &infos->dest.sin_addr) != 1)
