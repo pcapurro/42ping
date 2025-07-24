@@ -90,7 +90,6 @@ void	*addTime(double** times, int* timesLen, const double newNumber)
 
 void	registerTime(tInfos* infos)
 {
-	infos->end = getTime();
 	infos->received++;
 
 	if ((infos->end - infos->start) < infos->min)

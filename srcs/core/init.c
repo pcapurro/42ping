@@ -19,24 +19,21 @@ void	setToDefault(tInfos* infos)
 	infos->timesLen = 42;
 	infos->times = NULL;
 
-	infos->socket = -1;
-	
+ 	infos->socket = -1;
+
 	infos->error = false;
 	infos->errorType = 0;
+
+	memset(&infos->src, 0, sizeof(infos->src));
+	memset(&infos->dest, 0, sizeof(infos->dest));
+
+	memset(&infos->ping, 0, sizeof(infos->ping));
 
 	infos->answerHdr = NULL;
 	infos->answer = NULL;
 }
 
-void	freeData(tInfos* infos)
-{
-	if (infos->times != NULL)
-		free(infos->times), infos->times = NULL;
-	if (infos->socket != -1)
-		close(infos->socket), infos->socket = -1;
-}
-
-void	initialize(tInfos* infos)
+void	initializeHost(tInfos* infos)
 {
 	struct hostent		*hostInfos = NULL;
 	struct in_addr		addr = {0};
@@ -49,11 +46,10 @@ void	initialize(tInfos* infos)
 	addr.s_addr = *(uint32_t *) hostInfos->h_addr_list[0];
 
 	infos->ip = inet_ntoa(addr);
-	// printf("%s\n", infos->ip);
+}
 
-	setToDefault(infos);
-	infosPtr = infos;
-
+void	initializeSocket(tInfos* infos)
+{
 	infos->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (infos->socket == -1)
 		error(5, strerror(errno), '\0');
@@ -70,9 +66,10 @@ void	initialize(tInfos* infos)
 	int value = 1;
 	if (setsockopt(infos->socket, SOL_SOCKET, SO_BROADCAST, &value, sizeof(value)) != 0)
 		freeData(infos), error(5, strerror(errno), '\0');
+}
 
-	memset(&infos->ping, 0, sizeof(infos->ping));
-
+void	initializePackage(tInfos* infos)
+{
 	infos->ping.header.type = ICMP_ECHO;
 	infos->ping.header.code = 0;
 
@@ -84,13 +81,13 @@ void	initialize(tInfos* infos)
 
 	infos->ping.header.checksum = 0;
 
-	memset(&infos->src, 0, sizeof(infos->src));
-	memset(&infos->dest, 0, sizeof(infos->src));
-
 	infos->dest.sin_family = AF_INET;
 	if (inet_pton(AF_INET, infos->ip, &infos->dest.sin_addr) != 1)
 		freeData(infos), error(5, strerror(errno), '\0');
+}
 
+void	initializeTime(tInfos* infos)
+{
 	infos->times = malloc(sizeof(double) * 42);
 	if (!infos->times)
 		freeData(infos), error(6, NULL, '\0');
@@ -98,4 +95,18 @@ void	initialize(tInfos* infos)
 	infos->timesLen = 42;
 	for (int i = 0; i != infos->timesLen; i++)
 		infos->times[i] = 0;
+}
+
+void	initialize(tInfos* infos)
+{
+	setToDefault(infos);
+	infosPtr = infos;
+
+	initializeHost(infos);
+
+	initializeSocket(infos);
+
+	initializePackage(infos);
+
+	initializeTime(infos);
 }

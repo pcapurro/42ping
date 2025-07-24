@@ -2,6 +2,15 @@
 
 tInfos*	infosPtr = NULL;
 
+void	freeData(tInfos* infos)
+{
+	if (infos->times != NULL)
+		free(infos->times), infos->times = NULL;
+
+	if (infos->socket != -1)
+		close(infos->socket), infos->socket = -1;
+}
+
 void	end(const int signal)
 {
 	(void) signal;
@@ -45,6 +54,8 @@ int	receivePong(tInfos* infos, unsigned char* answer)
 
 		if (value == -1 && errno != EAGAIN && errno != EWOULDBLOCK)
 			freeData(infos), error(5, strerror(errno), '\0');
+
+		infos->end = getTime();
 
 		infos->answerHdr = (ipHdr*) answer;
 		infos->answer = (tIcmp*) (answer + ((struct iphdr*)answer)->ihl * 4);

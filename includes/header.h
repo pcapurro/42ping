@@ -28,7 +28,6 @@ void		error(const int value, const char* str, const char c);
 void		*registerHost(tInfos* infos, const char** argv);
 void		*registerOptionsPOSIX(tInfos* infos, const char** argv);
 void		*registerOptionsGNU(tInfos* infos, const char** argv);
-
 void		*registerArguments(tInfos* infos, const char** argv);
 
 void		writeStr(const char* str, const int value);
@@ -48,13 +47,16 @@ void		printLog(tInfos* infos, const unsigned char* answer, const int value);
 void		printFinal(tInfos* infos);
 
 void		setToDefault(tInfos* infos);
-void		freeData(tInfos* infos);
+void	    initializeHost(tInfos* infos);
+void	    initializeSocket(tInfos* infos);
+void	    initializePackage(tInfos* infos);
+void	    initializeTime(tInfos* infos);
+void		initialize(tInfos* infos);
 
+void		freeData(tInfos* infos);
+void		end(const int signal);
 void		sendPing(tInfos* infos);
 int			receivePong(tInfos* infos, unsigned char* answer);
-
-void		end(const int signal);
-void		initialize(tInfos* infos);
 void		ping(tInfos* infos);
 
 void		help(void);
