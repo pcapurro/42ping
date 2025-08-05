@@ -2,7 +2,7 @@
 
 void	help(void)
 {
-	printf("Usage: ping [OPTION...] HOST ...\n");	
+	printf("Usage: 42ping [OPTION...] HOST ...\n");	
 	printf("Send ICMP ECHO_REQUEST packets to network hosts.\n");
 	printf("\n");
 
